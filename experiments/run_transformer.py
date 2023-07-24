@@ -32,8 +32,8 @@ test = test[["text_a", "text_b", "labels"]]
 
 test_sentence_pairs = list(map(list, zip(test['text_a'].to_list(), test['text_b'].to_list())))
 test_preds = np.zeros((len(test), 5))
-for i in range(5):
 
+for i in range(5):
     args = LCPArgs()
     args.eval_batch_size = 16
     args.evaluate_during_training = True
@@ -52,14 +52,14 @@ for i in range(5):
     if os.path.exists(args.output_dir) and os.path.isdir(
             args.output_dir):
         shutil.rmtree(args.output_dir)
-        model = LCPModel(args.model_type, args.model_name, num_labels=1, use_cuda=torch.cuda.is_available(),
+    model = LCPModel(args.model_type, args.model_name, num_labels=1, use_cuda=torch.cuda.is_available(),
                                     args=args)
-        model.train_model(train, eval_df=dev, pearson_corr=pearson_corr, spearman_corr=spearman_corr,
+    model.train_model(train, eval_df=dev, pearson_corr=pearson_corr, spearman_corr=spearman_corr,
                           mae=mean_absolute_error)
-        model = LCPModel(args.model_type, args.best_model_dir, num_labels=1,
+    model = LCPModel(args.model_type, args.best_model_dir, num_labels=1,
                                     use_cuda=torch.cuda.is_available(), rgs=args)
-        predictions, raw_outputs = model.predict(test_sentence_pairs)
-        test_preds[:, i] = predictions
+    predictions, raw_outputs = model.predict(test_sentence_pairs)
+    test_preds[:, i] = predictions
 
 test['predictions'] = test_preds.mean(axis=1)
 print_stat(test, 'labels', 'predictions')
