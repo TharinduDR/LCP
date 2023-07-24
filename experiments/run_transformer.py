@@ -57,7 +57,7 @@ for i in range(5):
     model.train_model(train, eval_df=dev, pearson_corr=pearson_corr, spearman_corr=spearman_corr,
                           mae=mean_absolute_error)
     model = LCPModel(args.model_type, args.best_model_dir, num_labels=1,
-                                    use_cuda=torch.cuda.is_available(), rgs=args)
+                                    use_cuda=torch.cuda.is_available(), args=args)
     predictions, raw_outputs = model.predict(test_sentence_pairs)
     test_preds[:, i] = predictions
 
