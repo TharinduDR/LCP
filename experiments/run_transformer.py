@@ -6,9 +6,9 @@ import numpy as np
 import torch
 from sklearn.metrics import mean_absolute_error
 
-from transformer_model.evaluation import pearson_corr, spearman_corr, print_stat
-from transformer_model.model_args import LCPArgs
-from transformer_model.run_model import LCPModel
+from algo.transformer_model.evaluation import pearson_corr, spearman_corr, print_stat
+from algo.transformer_model.model_args import LCPArgs
+from algo.transformer_model.run_model import LCPModel
 
 train = pd.read_csv("data/v0.01_CompLex-pt_train.tsv", sep="\t")
 dev = pd.read_csv("data/v0.01_CompLex-pt_dev.tsv", sep="\t")
