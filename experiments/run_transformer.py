@@ -18,9 +18,13 @@ train = train[["genre", "pt_sentence", "pt_word", "avg_complexity"]]
 dev = dev[["genre", "pt_sentence", "pt_word", "avg_complexity"]]
 test = test[["genre", "pt_sentence", "pt_word", "avg_complexity"]]
 
-train["text_a"] = train["genre"] + ' ' + train["pt_word"]
-dev["text_a"] = dev["genre"] + ' ' + dev["pt_word"]
-test["text_a"] = test["genre"] + ' ' + test["pt_word"]
+# train["text_a"] = train["genre"] + ' ' + train["pt_word"]
+# dev["text_a"] = dev["genre"] + ' ' + dev["pt_word"]
+# test["text_a"] = test["genre"] + ' ' + test["pt_word"]
+
+train["text_a"] = train["pt_word"]
+dev["text_a"] = dev["pt_word"]
+test["text_a"] = test["pt_word"]
 
 train = train.rename(columns={'pt_sentence': 'text_b', 'avg_complexity': 'labels'}).dropna()
 dev = dev.rename(columns={'pt_sentence': 'text_b', 'avg_complexity': 'labels'}).dropna()
@@ -40,11 +44,11 @@ for i in range(5):
     args.evaluate_during_training_steps = 120
     args.evaluate_during_training_verbose = True
     args.logging_steps = 120
-    args.learning_rate = 4e-4
+    args.learning_rate = 1e-5
     args.manual_seed = 777*i
     args.max_seq_length = 256
-    args.model_type = "bert"
-    args.model_name = "bert-base-multilingual-cased"
+    args.model_type = "xlmroberta"
+    args.model_name = "xlm-roberta-large"
     args.num_train_epochs = 5
     args.save_steps = 120
     args.train_batch_size = 8
