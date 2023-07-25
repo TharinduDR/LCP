@@ -5,21 +5,22 @@ import pandas as pd
 import numpy as np
 import torch
 from sklearn.metrics import mean_absolute_error
+from sklearn.model_selection import train_test_split
 
 from algo.transformer_model.evaluation import pearson_corr, spearman_corr, print_stat
 from algo.transformer_model.model_args import LCPArgs
 from algo.transformer_model.run_model import LCPModel
 
-train = pd.read_csv("data/v0.01_CompLex-pt_train.tsv", sep="\t")
-dev = pd.read_csv("data/v0.01_CompLex-pt_dev.tsv", sep="\t")
+train = pd.read_csv("data/full.tsv", sep="\t")
+# dev = pd.read_csv("data/v0.01_CompLex-pt_dev.tsv", sep="\t")
 test = pd.read_csv("data/v0.01_CompLex-pt_test.tsv", sep="\t")
 
 train = train[["genre", "pt_sentence", "pt_word", "avg_complexity"]]
-dev = dev[["genre", "pt_sentence", "pt_word", "avg_complexity"]]
+# dev = dev[["genre", "pt_sentence", "pt_word", "avg_complexity"]]
 test = test[["genre", "pt_sentence", "pt_word", "avg_complexity"]]
 
 train["text_a"] = train["genre"] + ' ' + train["pt_word"]
-dev["text_a"] = dev["genre"] + ' ' + dev["pt_word"]
+# dev["text_a"] = dev["genre"] + ' ' + dev["pt_word"]
 test["text_a"] = test["genre"] + ' ' + test["pt_word"]
 
 # train["text_a"] = train["pt_word"]
@@ -27,15 +28,17 @@ test["text_a"] = test["genre"] + ' ' + test["pt_word"]
 # test["text_a"] = test["pt_word"]
 
 train = train.rename(columns={'pt_sentence': 'text_b', 'avg_complexity': 'labels'}).dropna()
-dev = dev.rename(columns={'pt_sentence': 'text_b', 'avg_complexity': 'labels'}).dropna()
+# dev = dev.rename(columns={'pt_sentence': 'text_b', 'avg_complexity': 'labels'}).dropna()
 test = test.rename(columns={'pt_sentence': 'text_b', 'avg_complexity': 'labels'}).dropna()
 
 train = train[["text_a", "text_b", "labels"]]
-dev = dev[["text_a", "text_b", "labels"]]
+# dev = dev[["text_a", "text_b", "labels"]]
 test = test[["text_a", "text_b", "labels"]]
 
 test_sentence_pairs = list(map(list, zip(test['text_a'].to_list(), test['text_b'].to_list())))
 test_preds = np.zeros((len(test), 5))
+
+train, dev = train_test_split(train, test_size=0.2)
 
 for i in range(5):
     model_args = LCPArgs()
@@ -44,7 +47,7 @@ for i in range(5):
     model_args.evaluate_during_training_steps = 120
     model_args.evaluate_during_training_verbose = True
     model_args.logging_steps = 120
-    model_args.learning_rate = 1e-6
+    model_args.learning_rate = 5e-6
     model_args.manual_seed = 777*i
     model_args.max_seq_length = 256
     model_args.model_type = "bert"
