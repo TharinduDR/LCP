@@ -44,7 +44,7 @@ for i in range(5):
     model_args.evaluate_during_training_steps = 120
     model_args.evaluate_during_training_verbose = True
     model_args.logging_steps = 120
-    model_args.learning_rate = 5e-3
+    model_args.learning_rate = 1e-6
     model_args.manual_seed = 777*i
     model_args.max_seq_length = 256
     model_args.model_type = "bert"
