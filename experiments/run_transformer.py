@@ -48,7 +48,7 @@ for i in range(5):
     model_args.manual_seed = 777*i
     model_args.max_seq_length = 256
     model_args.model_type = "bert"
-    model_args.model_name = "neuralmind/bert-large-portuguese-cased"
+    model_args.model_name = "neuralmind/bert-base-portuguese-cased"
     model_args.num_train_epochs = 5
     model_args.save_steps = 120
     model_args.train_batch_size = 8
