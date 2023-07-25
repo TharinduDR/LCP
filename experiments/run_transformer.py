@@ -38,33 +38,35 @@ test_sentence_pairs = list(map(list, zip(test['text_a'].to_list(), test['text_b'
 test_preds = np.zeros((len(test), 5))
 
 for i in range(5):
-    args = LCPArgs()
-    args.eval_batch_size = 16
-    args.evaluate_during_training = True
-    args.evaluate_during_training_steps = 120
-    args.evaluate_during_training_verbose = True
-    args.logging_steps = 120
-    args.learning_rate = 1e-5
-    args.manual_seed = 777*i
-    args.max_seq_length = 256
-    args.model_type = "xlmroberta"
-    args.model_name = "xlm-roberta-large"
-    args.num_train_epochs = 5
-    args.save_steps = 120
-    args.train_batch_size = 8
-    args.wandb_project = "LCP"
+    model_args = LCPArgs()
+    model_args.eval_batch_size = 16
+    model_args.evaluate_during_training = True
+    model_args.evaluate_during_training_steps = 120
+    model_args.evaluate_during_training_verbose = True
+    model_args.logging_steps = 120
+    model_args.learning_rate = 1e-5
+    model_args.manual_seed = 777*i
+    model_args.max_seq_length = 256
+    model_args.model_type = "xlmroberta"
+    model_args.model_name = "xlm-roberta-large"
+    model_args.num_train_epochs = 5
+    model_args.save_steps = 120
+    model_args.train_batch_size = 8
+    model_args.wandb_project = "LCP"
+    model_args.regression = True
 
-    if os.path.exists(args.output_dir) and os.path.isdir(
-            args.output_dir):
-        shutil.rmtree(args.output_dir)
-    model = LCPModel(args.model_type, args.model_name, num_labels=1, use_cuda=torch.cuda.is_available(),
-                                    args=args)
+    if os.path.exists(model_args.output_dir) and os.path.isdir(
+            model_args.output_dir):
+        shutil.rmtree(model_args.output_dir)
+    model = LCPModel(model_args.model_type, model_args.model_name, num_labels=1, use_cuda=torch.cuda.is_available(),
+                                    args=model_args)
     model.train_model(train, eval_df=dev, pearson_corr=pearson_corr, spearman_corr=spearman_corr,
                           mae=mean_absolute_error)
-    model = LCPModel(args.model_type, args.best_model_dir, num_labels=1,
-                                    use_cuda=torch.cuda.is_available(), args=args)
+    model = LCPModel(model_args.model_type, model_args.best_model_dir, num_labels=1,
+                                    use_cuda=torch.cuda.is_available(), args=model_args)
     predictions, raw_outputs = model.predict(test_sentence_pairs)
     test_preds[:, i] = predictions
 
 test['predictions'] = test_preds.mean(axis=1)
 print_stat(test, 'labels', 'predictions')
+test.to_csv("test_predictions.csv", sep="\t", index=False)
