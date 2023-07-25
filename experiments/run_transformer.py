@@ -40,7 +40,7 @@ for i in range(5):
     args.evaluate_during_training_steps = 120
     args.evaluate_during_training_verbose = True
     args.logging_steps = 120
-    args.learning_rate = 1e-4
+    args.learning_rate = 4e-4
     args.manual_seed = 777*i
     args.max_seq_length = 200
     args.model_type = "bert"
@@ -48,6 +48,7 @@ for i in range(5):
     args.num_train_epochs = 5
     args.save_steps = 120
     args.train_batch_size = 8
+    args.wandb_project = "LCP"
 
     if os.path.exists(args.output_dir) and os.path.isdir(
             args.output_dir):
