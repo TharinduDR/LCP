@@ -42,7 +42,7 @@ for i in range(5):
     args.logging_steps = 120
     args.learning_rate = 4e-4
     args.manual_seed = 777*i
-    args.max_seq_length = 200
+    args.max_seq_length = 256
     args.model_type = "bert"
     args.model_name = "bert-base-multilingual-cased"
     args.num_train_epochs = 5
