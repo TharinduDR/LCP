@@ -1,6 +1,6 @@
 import os
 import shutil
-
+import math
 import pandas as pd
 import numpy as np
 import torch
@@ -11,7 +11,12 @@ from algo.transformer_model.evaluation import pearson_corr, spearman_corr, print
 from algo.transformer_model.model_args import LCPArgs
 from algo.transformer_model.run_model import LCPModel
 
-train = pd.read_csv("data/full.csv", sep="\t")
+
+def log_function(value):
+    return math.log(1 / (1 - value))
+
+
+train = pd.read_csv("data/v0.01_CompLex-pt_train.tsv", sep="\t")
 dev = pd.read_csv("data/v0.01_CompLex-pt_dev.tsv", sep="\t")
 test = pd.read_csv("data/v0.01_CompLex-pt_test.tsv", sep="\t")
 
@@ -35,6 +40,10 @@ train = train[["text_a", "text_b", "labels"]]
 dev = dev[["text_a", "text_b", "labels"]]
 test = test[["text_a", "text_b", "labels"]]
 
+train['labels'] = train['labels'].apply(log_function)
+dev['labels'] = dev['labels'].apply(log_function)
+test['labels'] = test['labels'].apply(log_function)
+
 test_sentence_pairs = list(map(list, zip(test['text_a'].to_list(), test['text_b'].to_list())))
 test_preds = np.zeros((len(test), 5))
 
@@ -49,7 +58,7 @@ for i in range(5):
     model_args.evaluate_during_training_verbose = True
     model_args.logging_steps = 100
     model_args.learning_rate = 5e-4
-    model_args.manual_seed = 777*i
+    model_args.manual_seed = 777 * i
     model_args.max_seq_length = 256
     model_args.model_type = "bert"
     model_args.model_name = "neuralmind/bert-base-portuguese-cased"
@@ -63,11 +72,11 @@ for i in range(5):
             model_args.output_dir):
         shutil.rmtree(model_args.output_dir)
     model = LCPModel(model_args.model_type, model_args.model_name, num_labels=1, use_cuda=torch.cuda.is_available(),
-                                    args=model_args)
+                     args=model_args)
     model.train_model(train, eval_df=dev, pearson_corr=pearson_corr, spearman_corr=spearman_corr,
-                          mae=mean_absolute_error)
+                      mae=mean_absolute_error)
     model = LCPModel(model_args.model_type, model_args.best_model_dir, num_labels=1,
-                                    use_cuda=torch.cuda.is_available(), args=model_args)
+                     use_cuda=torch.cuda.is_available(), args=model_args)
     predictions, raw_outputs = model.predict(test_sentence_pairs)
     test_preds[:, i] = predictions
 
