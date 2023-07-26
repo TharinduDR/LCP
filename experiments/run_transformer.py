@@ -12,8 +12,8 @@ from algo.transformer_model.model_args import LCPArgs
 from algo.transformer_model.run_model import LCPModel
 
 
-def log_function(value):
-    return math.log(1 / (1 - value))
+# def log_function(value):
+#     return math.log(1 / (1 - value))
 
 
 train = pd.read_csv("data/v0.01_CompLex-pt_train.tsv", sep="\t")
@@ -40,9 +40,9 @@ train = train[["text_a", "text_b", "labels"]]
 dev = dev[["text_a", "text_b", "labels"]]
 test = test[["text_a", "text_b", "labels"]]
 
-train['labels'] = train['labels'].apply(log_function)
-dev['labels'] = dev['labels'].apply(log_function)
-test['labels'] = test['labels'].apply(log_function)
+# train['labels'] = train['labels'].apply(log_function)
+# dev['labels'] = dev['labels'].apply(log_function)
+# test['labels'] = test['labels'].apply(log_function)
 
 test_sentence_pairs = list(map(list, zip(test['text_a'].to_list(), test['text_b'].to_list())))
 test_preds = np.zeros((len(test), 5))
@@ -54,16 +54,16 @@ for i in range(5):
     model_args = LCPArgs()
     model_args.eval_batch_size = 16
     model_args.evaluate_during_training = True
-    model_args.evaluate_during_training_steps = 100
+    model_args.evaluate_during_training_steps = 40
     model_args.evaluate_during_training_verbose = True
-    model_args.logging_steps = 100
+    model_args.logging_steps = 40
     model_args.learning_rate = 5e-3
     model_args.manual_seed = 777 * i
     model_args.max_seq_length = 256
     model_args.model_type = "bert"
     model_args.model_name = "neuralmind/bert-base-portuguese-cased"
     model_args.num_train_epochs = 5
-    model_args.save_steps = 100
+    model_args.save_steps = 40
     model_args.train_batch_size = 8
     model_args.wandb_project = "LCP"
     model_args.regression = True
