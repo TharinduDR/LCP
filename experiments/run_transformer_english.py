@@ -40,7 +40,7 @@ portuguese_test = portuguese_test.rename(columns={'pt_sentence': 'text_b', 'avg_
 portuguese_test = portuguese_test[["text_a", "text_b", "labels"]]
 
 portuguese_test_sentence_pairs = list(map(list, zip(portuguese_test['text_a'].to_list(), portuguese_test['text_b'].to_list())))
-portuguese_test_preds = np.zeros((len(test), 5))
+portuguese_test_preds = np.zeros((len(portuguese_test), 5))
 
 for i in range(1):
     model_args = LCPArgs()
@@ -56,7 +56,7 @@ for i in range(1):
     model_args.max_seq_length = 256
     model_args.model_type = "xlmroberta"
     model_args.model_name = "xlm-roberta-large"
-    model_args.num_train_epochs = 5
+    model_args.num_train_epochs = 3
     model_args.output_dir = "english_outputs/"
     model_args.save_steps = 120
     model_args.train_batch_size = 8
