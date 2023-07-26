@@ -45,7 +45,6 @@ portuguese_test_preds = np.zeros((len(portuguese_test), 5))
 for i in range(1):
     model_args = LCPArgs()
     model_args.best_model_dir = "english_outputs/best_model"
-    model_args.best_model_dir = "english_outputs/best_model"
     model_args.eval_batch_size = 16
     model_args.evaluate_during_training = True
     model_args.evaluate_during_training_steps = 120
