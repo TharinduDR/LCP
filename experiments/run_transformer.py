@@ -16,7 +16,7 @@ from algo.transformer_model.run_model import LCPModel
 #     return math.log(1 / (1 - value))
 
 
-train = pd.read_csv("data/full.tsv", sep="\t")
+train = pd.read_csv("data/full.csv", sep="\t")
 dev = pd.read_csv("data/v0.01_CompLex-pt_dev.tsv", sep="\t")
 test = pd.read_csv("data/v0.01_CompLex-pt_test.tsv", sep="\t")
 
