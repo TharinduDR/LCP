@@ -16,25 +16,25 @@ from algo.transformer_model.run_model import LCPModel
 #     return math.log(1 / (1 - value))
 
 
-train = pd.read_csv("data/full.csv", sep="\t")
+train = pd.read_csv("data/v0.01_CompLex-pt_train.tsv", sep="\t")
 dev = pd.read_csv("data/v0.01_CompLex-pt_dev.tsv", sep="\t")
 test = pd.read_csv("data/v0.01_CompLex-pt_test.tsv", sep="\t")
 
-train = train[["genre", "pt_sentence", "pt_word", "avg_complexity"]]
-dev = dev[["genre", "pt_sentence", "pt_word", "avg_complexity"]]
-test = test[["genre", "pt_sentence", "pt_word", "avg_complexity"]]
+train = train[["genre", "CompLex_sentence", "CompLex_word", "avg_complexity"]]
+dev = dev[["genre", "CompLex_sentence", "CompLex_word", "avg_complexity"]]
+test = test[["genre", "CompLex_sentence", "CompLex_word", "avg_complexity"]]
 
-train["text_a"] = train["genre"] + ' ' + train["pt_word"]
-dev["text_a"] = dev["genre"] + ' ' + dev["pt_word"]
-test["text_a"] = test["genre"] + ' ' + test["pt_word"]
+train["text_a"] = train["genre"] + ' ' + train["CompLex_word"]
+dev["text_a"] = dev["genre"] + ' ' + dev["CompLex_word"]
+test["text_a"] = test["genre"] + ' ' + test["CompLex_word"]
 
 # train["text_a"] = train["pt_word"]
 # dev["text_a"] = dev["pt_word"]
 # test["text_a"] = test["pt_word"]
 
-train = train.rename(columns={'pt_sentence': 'text_b', 'avg_complexity': 'labels'}).dropna()
-dev = dev.rename(columns={'pt_sentence': 'text_b', 'avg_complexity': 'labels'}).dropna()
-test = test.rename(columns={'pt_sentence': 'text_b', 'avg_complexity': 'labels'}).dropna()
+train = train.rename(columns={'CompLex_sentence': 'text_b', 'avg_complexity': 'labels'}).dropna()
+dev = dev.rename(columns={'CompLex_sentence': 'text_b', 'avg_complexity': 'labels'}).dropna()
+test = test.rename(columns={'CompLex_sentence': 'text_b', 'avg_complexity': 'labels'}).dropna()
 
 train = train[["text_a", "text_b", "labels"]]
 dev = dev[["text_a", "text_b", "labels"]]
@@ -61,7 +61,7 @@ for i in range(5):
     model_args.manual_seed = 777 * i
     model_args.max_seq_length = 256
     model_args.model_type = "bert"
-    model_args.model_name = "neuralmind/bert-base-portuguese-cased"
+    model_args.model_name = "bert-large-cased"
     model_args.num_train_epochs = 5
     model_args.save_steps = 40
     model_args.train_batch_size = 8
