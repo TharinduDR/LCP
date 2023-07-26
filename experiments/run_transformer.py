@@ -38,6 +38,7 @@ test = test[["text_a", "text_b", "labels"]]
 test_sentence_pairs = list(map(list, zip(test['text_a'].to_list(), test['text_b'].to_list())))
 test_preds = np.zeros((len(test), 5))
 
+train = train.sample(frac=1).reset_index(drop=True)
 # train, dev = train_test_split(train, test_size=0.2)
 
 for i in range(5):
@@ -47,7 +48,7 @@ for i in range(5):
     model_args.evaluate_during_training_steps = 500
     model_args.evaluate_during_training_verbose = True
     model_args.logging_steps = 500
-    model_args.learning_rate = 5e-6
+    model_args.learning_rate = 5e-4
     model_args.manual_seed = 777*i
     model_args.max_seq_length = 256
     model_args.model_type = "bert"
