@@ -20,29 +20,23 @@ train = pd.read_csv("data/v0.01_CompLex-pt_train.tsv", sep="\t")
 dev = pd.read_csv("data/v0.01_CompLex-pt_dev.tsv", sep="\t")
 test = pd.read_csv("data/v0.01_CompLex-pt_test.tsv", sep="\t")
 
-train = train[["genre", "CompLex_sentence", "CompLex_word", "avg_complexity"]]
-dev = dev[["genre", "CompLex_sentence", "CompLex_word", "avg_complexity"]]
-test = test[["genre", "CompLex_sentence", "CompLex_word", "avg_complexity"]]
+train = train[["genre", "pt_sentence", "pt_word", "avg_complexity"]]
+dev = dev[["genre", "pt_sentence", "pt_word", "avg_complexity"]]
+test = test[["genre", "pt_sentence", "pt_word", "avg_complexity"]]
 
-train["text_a"] = train["genre"] + ' ' + train["CompLex_word"]
-dev["text_a"] = dev["genre"] + ' ' + dev["CompLex_word"]
-test["text_a"] = test["genre"] + ' ' + test["CompLex_word"]
+train["text_a"] = train["genre"] + ' ' + train["pt_word"]
+dev["text_a"] = dev["genre"] + ' ' + dev["pt_word"]
+test["text_a"] = test["genre"] + ' ' + test["pt_word"]
 
-# train["text_a"] = train["pt_word"]
-# dev["text_a"] = dev["pt_word"]
-# test["text_a"] = test["pt_word"]
 
-train = train.rename(columns={'CompLex_sentence': 'text_b', 'avg_complexity': 'labels'}).dropna()
-dev = dev.rename(columns={'CompLex_sentence': 'text_b', 'avg_complexity': 'labels'}).dropna()
-test = test.rename(columns={'CompLex_sentence': 'text_b', 'avg_complexity': 'labels'}).dropna()
+train = train.rename(columns={'pt_sentence': 'text_b', 'avg_complexity': 'labels'}).dropna()
+dev = dev.rename(columns={'pt_sentence': 'text_b', 'avg_complexity': 'labels'}).dropna()
+test = test.rename(columns={'pt_sentence': 'text_b', 'avg_complexity': 'labels'}).dropna()
 
 train = train[["text_a", "text_b", "labels"]]
 dev = dev[["text_a", "text_b", "labels"]]
 test = test[["text_a", "text_b", "labels"]]
 
-# train['labels'] = train['labels'].apply(log_function)
-# dev['labels'] = dev['labels'].apply(log_function)
-# test['labels'] = test['labels'].apply(log_function)
 
 test_sentence_pairs = list(map(list, zip(test['text_a'].to_list(), test['text_b'].to_list())))
 test_preds = np.zeros((len(test), 5))
@@ -57,11 +51,11 @@ for i in range(5):
     model_args.evaluate_during_training_steps = 100
     model_args.evaluate_during_training_verbose = True
     model_args.logging_steps = 100
-    model_args.learning_rate = 5e-6
+    model_args.learning_rate = 2e-5
     model_args.manual_seed = 777 * i
     model_args.max_seq_length = 256
     model_args.model_type = "bert"
-    model_args.model_name = "bert-large-cased"
+    model_args.model_name = "neuralmind/bert-large-portuguese-cased"
     model_args.num_train_epochs = 5
     model_args.save_steps = 100
     model_args.train_batch_size = 8
