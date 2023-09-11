@@ -16,9 +16,9 @@ from algo.transformer_model.run_model import LCPModel
 #     return math.log(1 / (1 - value))
 
 
-train = pd.read_csv("data/v0.01_CompLex-pt_train.tsv", sep="\t")
-dev = pd.read_csv("data/v0.01_CompLex-pt_dev.tsv", sep="\t")
-test = pd.read_csv("data/v0.01_CompLex-pt_test.tsv", sep="\t")
+train = pd.read_csv("data/v0.02_MultiLex_train.tsv", sep="\t")
+dev = pd.read_csv("data/v0.02_MultiLex_dev.tsv", sep="\t")
+test = pd.read_csv("data/v0.02_MultiLex_test.tsv", sep="\t")
 
 train = train[["genre", "pt_sentence", "pt_word", "avg_complexity"]]
 dev = dev[["genre", "pt_sentence", "pt_word", "avg_complexity"]]
