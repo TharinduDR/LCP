@@ -11,7 +11,6 @@ from algo.transformer_model.evaluation import pearson_corr, spearman_corr, print
 from algo.transformer_model.model_args import LCPArgs
 from algo.transformer_model.run_model import LCPModel
 
-
 # def log_function(value):
 #     return math.log(1 / (1 - value))
 
@@ -28,7 +27,6 @@ train["text_a"] = train["genre"] + ' ' + train["pt_word"]
 dev["text_a"] = dev["genre"] + ' ' + dev["pt_word"]
 test["text_a"] = test["genre"] + ' ' + test["pt_word"]
 
-
 train = train.rename(columns={'pt_sentence': 'text_b', 'avg_complexity': 'labels'}).dropna()
 dev = dev.rename(columns={'pt_sentence': 'text_b', 'avg_complexity': 'labels'}).dropna()
 test = test.rename(columns={'pt_sentence': 'text_b', 'avg_complexity': 'labels'}).dropna()
@@ -36,7 +34,6 @@ test = test.rename(columns={'pt_sentence': 'text_b', 'avg_complexity': 'labels'}
 train = train[["text_a", "text_b", "labels"]]
 dev = dev[["text_a", "text_b", "labels"]]
 test = test[["text_a", "text_b", "labels"]]
-
 
 test_sentence_pairs = list(map(list, zip(test['text_a'].to_list(), test['text_b'].to_list())))
 test_preds = np.zeros((len(test), 5))
@@ -46,18 +43,20 @@ train = train.sample(frac=1).reset_index(drop=True)
 
 for i in range(5):
     model_args = LCPArgs()
+    model_args.best_model_dir = "portuguese_outputs/best_model"
     model_args.eval_batch_size = 16
     model_args.evaluate_during_training = True
-    model_args.evaluate_during_training_steps = 100
+    model_args.evaluate_during_training_steps = 120
     model_args.evaluate_during_training_verbose = True
-    model_args.logging_steps = 100
+    model_args.logging_steps = 120
     model_args.learning_rate = 2e-5
     model_args.manual_seed = 777 * i
     model_args.max_seq_length = 256
     model_args.model_type = "bert"
     model_args.model_name = "neuralmind/bert-large-portuguese-cased"
     model_args.num_train_epochs = 5
-    model_args.save_steps = 100
+    model_args.output_dir = "portuguese_outputs/"
+    model_args.save_steps = 120
     model_args.train_batch_size = 8
     model_args.wandb_project = "LCP"
     model_args.regression = True
@@ -77,3 +76,20 @@ for i in range(5):
 test['predictions'] = test_preds.mean(axis=1)
 print_stat(test, 'labels', 'predictions')
 test.to_csv("test_predictions.csv", sep="\t", index=False)
+
+print("=================")
+
+
+def genre_function(text):
+    text = str(text)
+    return text.split()[0]
+
+
+test["genre"] = test['text_a'].apply(genre_function)
+
+genres = test['genre'].unique()
+for genre in genres:
+    print(genre)
+    filtered_predictions = test.loc[test['genre'] == genre]
+    print_stat(filtered_predictions, 'labels', 'predictions')
+    print("=================")
