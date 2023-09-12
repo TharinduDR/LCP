@@ -43,7 +43,7 @@ train = train.sample(frac=1).reset_index(drop=True)
 
 for i in range(5):
     model_args = LCPArgs()
-    model_args.best_model_dir = ""
+    model_args.best_model_dir = "portuguese_outputs/best_model"
     model_args.eval_batch_size = 16
     model_args.evaluate_during_training = True
     model_args.evaluate_during_training_steps = 120
