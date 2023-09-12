@@ -49,11 +49,11 @@ for i in range(5):
     model_args.evaluate_during_training_steps = 300
     model_args.evaluate_during_training_verbose = True
     model_args.logging_steps = 300
-    model_args.learning_rate = 5e-6
+    model_args.learning_rate = 2e-5
     model_args.manual_seed = 777 * i
     model_args.max_seq_length = 256
-    model_args.model_type = "bert"
-    model_args.model_name = "bert-large-cased"
+    model_args.model_type = "roberta"
+    model_args.model_name = "roberta-large"
     model_args.num_train_epochs = 5
     model_args.output_dir = "english_outputs/"
     model_args.save_steps = 300
