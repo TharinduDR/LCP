@@ -29,7 +29,7 @@ test = test[["text_a", "text_b", "labels"]]
 train, dev = train_test_split(train, test_size=0.2)
 
 test_sentence_pairs = list(map(list, zip(test['text_a'].to_list(), test['text_b'].to_list())))
-test_preds = np.zeros((len(test), 1))
+test_preds = np.zeros((len(test), 5))
 
 # portuguese_test = pd.read_csv("data/v0.01_CompLex-pt_test.tsv", sep="\t")
 # portuguese_test = portuguese_test[["genre", "pt_sentence", "pt_word", "avg_complexity"]]
