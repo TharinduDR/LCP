@@ -41,7 +41,7 @@ test_preds = np.zeros((len(test), 1))
 # portuguese_test_sentence_pairs = list(map(list, zip(portuguese_test['text_a'].to_list(), portuguese_test['text_b'].to_list())))
 # portuguese_test_preds = np.zeros((len(portuguese_test), 5))
 
-for i in range(1):
+for i in range(5):
     model_args = LCPArgs()
     model_args.best_model_dir = "english_outputs/best_model"
     model_args.eval_batch_size = 16
