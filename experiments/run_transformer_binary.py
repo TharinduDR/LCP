@@ -11,10 +11,35 @@ from algo.transformer_model.evaluation import pearson_corr, spearman_corr, print
 from algo.transformer_model.model_args import LCPArgs
 from algo.transformer_model.run_model import LCPModel
 
-train = pd.read_csv("data/binary_comparative_MultiLex_train_PT.tsv", sep="\t")
-dev = pd.read_csv("data/binary_comparative_MultiLex_dev_PT.tsv", sep="\t")
-test = pd.read_csv("data/binary_comparative_MultiLex_test_PT.tsv", sep="\t")
 
+
+train_bible = pd.read_csv("data/binary_comparative_MultiLex/PT/bible/binary_comparative_MultiLex_train_PT.tsv", sep="\t")
+train_biomed = pd.read_csv("data/binary_comparative_MultiLex/PT/biomed/binary_comparative_MultiLex_train_PT.tsv", sep="\t")
+train_news = pd.read_csv("data/binary_comparative_MultiLex/PT/news/binary_comparative_MultiLex_train_PT.tsv", sep="\t")
+
+dev_bible = pd.read_csv("data/binary_comparative_MultiLex/PT/bible/binary_comparative_MultiLex_dev_PT.tsv", sep="\t")
+dev_biomed = pd.read_csv("data/binary_comparative_MultiLex/PT/biomed/binary_comparative_MultiLex_dev_PT.tsv", sep="\t")
+dev_news = pd.read_csv("data/binary_comparative_MultiLex/PT/news/binary_comparative_MultiLex_dev_PT.tsv", sep="\t")
+
+test_bible = pd.read_csv("data/binary_comparative_MultiLex/PT/bible/binary_comparative_MultiLex_test_PT.tsv", sep="\t")
+test_biomed = pd.read_csv("data/binary_comparative_MultiLex/PT/biomed/binary_comparative_MultiLex_test_PT.tsv", sep="\t")
+test_news = pd.read_csv("data/binary_comparative_MultiLex/PT/news/binary_comparative_MultiLex_test_PT.tsv", sep="\t")
+
+train_bible["genre"] = "bible"
+train_biomed["genre"] = "biomed"
+train_news["genre"] = "news"
+
+dev_bible["genre"] = "bible"
+dev_biomed["genre"] = "biomed"
+dev_news["genre"] = "news"
+
+test_bible["genre"] = "bible"
+test_biomed["genre"] = "biomed"
+test_news["genre"] = "news"
+
+train = pd.concat([train_bible, train_biomed, train_news])
+dev = pd.concat([dev_bible, dev_biomed, dev_news])
+test = pd.concat([test_bible, test_biomed, test_news])
 
 def modify_sentence(word, context):
     new_word = "<" + word + ">"
