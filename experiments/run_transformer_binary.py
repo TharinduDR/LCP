@@ -3,11 +3,13 @@ import shutil
 import math
 import pandas as pd
 import numpy as np
+import sklearn
 import torch
 from sklearn.metrics import mean_absolute_error
 from sklearn.model_selection import train_test_split
 
-from algo.transformer_model.evaluation import pearson_corr, spearman_corr, print_stat, print_binary_stat
+from algo.transformer_model.evaluation import pearson_corr, spearman_corr, print_stat, print_binary_stat, macro_f1, \
+    weighted_f1
 from algo.transformer_model.model_args import LCPArgs
 from algo.transformer_model.run_model import LCPModel
 
@@ -55,6 +57,15 @@ dev['context2'] = dev.apply(lambda row: modify_sentence(row['word2'], row['conte
 test['context1'] = test.apply(lambda row: modify_sentence(row['word1'], row['context']), axis=1)
 test['context2'] = test.apply(lambda row: modify_sentence(row['word2'], row['context2']), axis=1)
 
+train = train.dropna(subset=['binary_comparative_val'])  # Remove rows with NaN or infinity
+train['binary_comparative_val'] = train['binary_comparative_val'].astype(int)
+
+dev = dev.dropna(subset=['binary_comparative_val'])  # Remove rows with NaN or infinity
+dev['binary_comparative_val'] = dev['binary_comparative_val'].astype(int)
+
+test = test.dropna(subset=['binary_comparative_val'])  # Remove rows with NaN or infinity
+test['binary_comparative_val'] = test['binary_comparative_val'].astype(int)
+
 train = train[["genre", "context1", "context2", "binary_comparative_val"]]
 dev = dev[["genre", "context1", "context2", "binary_comparative_val"]]
 test = test[["genre", "context1", "context2", "binary_comparative_val"]]
@@ -90,9 +101,8 @@ for i in range(5):
         shutil.rmtree(model_args.output_dir)
     model = LCPModel(model_args.model_type, model_args.model_name, use_cuda=torch.cuda.is_available(),
                      args=model_args)
-    model.train_model(train, eval_df=dev, pearson_corr=pearson_corr, spearman_corr=spearman_corr,
-                      mae=mean_absolute_error)
-    model = LCPModel(model_args.model_type, model_args.best_model_dir, num_labels=1,
+    model.train_model(train, eval_df=dev, macro_f1=macro_f1, weighted_f1=weighted_f1)
+    model = LCPModel(model_args.model_type, model_args.best_model_dir,
                      use_cuda=torch.cuda.is_available(), args=model_args)
     predictions, raw_outputs = model.predict(test_sentence_pairs)
     test_preds[:, i] = predictions
