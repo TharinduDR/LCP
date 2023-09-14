@@ -95,6 +95,7 @@ for i in range(5):
     model_args.save_steps = 1300
     model_args.train_batch_size = 8
     model_args.wandb_project = "LCP_BINARY"
+    model_args.regression = False
 
     if os.path.exists(model_args.output_dir) and os.path.isdir(
             model_args.output_dir):
