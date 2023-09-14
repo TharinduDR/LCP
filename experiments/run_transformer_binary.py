@@ -75,11 +75,11 @@ dev = dev.rename(columns={'context1': 'text_a', 'context2': 'text_b', 'binary_co
 test = test.rename(columns={'context1': 'text_a', 'context2': 'text_b', 'binary_comparative_val': 'labels'}).dropna()
 
 test_sentence_pairs = list(map(list, zip(test['text_a'].to_list(), test['text_b'].to_list())))
-test_preds = np.zeros((len(test), 5))
+test_preds = np.zeros((len(test), 1))
 
 for i in range(5):
     model_args = LCPArgs()
-    model_args.best_model_dir = "portuguese_binary_outputs/best_model"
+    model_args.best_model_dir = "portuguese_binary_outputs_1/best_model"
     model_args.eval_batch_size = 16
     model_args.evaluate_during_training = True
     model_args.evaluate_during_training_steps = 1300
@@ -88,10 +88,10 @@ for i in range(5):
     model_args.learning_rate = 2e-5
     model_args.manual_seed = 777 * i
     model_args.max_seq_length = 256
-    model_args.model_type = "xlmroberta"
-    model_args.model_name = "xlm-roberta-large"
-    model_args.num_train_epochs = 5
-    model_args.output_dir = "portuguese_binary_outputs/"
+    model_args.model_type = "bert"
+    model_args.model_name = "neuralmind/bert-large-portuguese-cased"
+    model_args.num_train_epochs = 1
+    model_args.output_dir = "portuguese_binary_outputs_1/"
     model_args.save_steps = 1300
     model_args.train_batch_size = 8
     model_args.wandb_project = "LCP_BINARY"
