@@ -175,7 +175,7 @@ for i in range(5):
     model = LCPModel(model_args.model_type, model_args.best_model_dir, num_labels=1,
                      use_cuda=torch.cuda.is_available(), args=model_args)
     predictions, raw_outputs = model.predict(portuguese_test_sentence_pairs)
-    test_preds[:, i] = predictions
+    portuguese_test_preds[:, i] = predictions
 
 portuguese_test['predictions'] = test_preds.mean(axis=1)
 print_stat(portuguese_test, 'labels', 'predictions')
