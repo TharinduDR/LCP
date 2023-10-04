@@ -43,7 +43,7 @@ portuguese_test_preds = np.zeros((len(portuguese_test), 5))
 
 for i in range(5):
     model_args = LCPArgs()
-    model_args.best_model_dir = "english_outputs/mbert/best_model"
+    model_args.best_model_dir = "english_outputs/xlmr_large/best_model"
     model_args.eval_batch_size = 16
     model_args.evaluate_during_training = True
     model_args.evaluate_during_training_steps = 300
@@ -52,10 +52,10 @@ for i in range(5):
     model_args.learning_rate = 2e-5
     model_args.manual_seed = 777 * i
     model_args.max_seq_length = 256
-    model_args.model_type = "bert"
-    model_args.model_name = "bert-base-multilingual-cased"
+    model_args.model_type = "xlmroberta"
+    model_args.model_name = "xlm-roberta-large"
     model_args.num_train_epochs = 5
-    model_args.output_dir = "english_outputs/mbert/"
+    model_args.output_dir = "english_outputs/xlmr_large/"
     model_args.save_steps = 300
     model_args.train_batch_size = 8
     model_args.wandb_project = "LCP"
