@@ -43,7 +43,7 @@ portuguese_test_preds = np.zeros((len(portuguese_test), 5))
 
 for i in range(5):
     model_args = LCPArgs()
-    model_args.best_model_dir = "english_outputs/xlmroberta_large/best_model"
+    model_args.best_model_dir = "english_outputs/xlmroberta_base/best_model"
     model_args.eval_batch_size = 16
     model_args.evaluate_during_training = True
     model_args.evaluate_during_training_steps = 300
@@ -53,9 +53,9 @@ for i in range(5):
     model_args.manual_seed = 777 * i
     model_args.max_seq_length = 256
     model_args.model_type = "xlmroberta"
-    model_args.model_name = "xlm-roberta-large"
+    model_args.model_name = "xlm-roberta-base"
     model_args.num_train_epochs = 5
-    model_args.output_dir = "english_outputs/xlmroberta_large/"
+    model_args.output_dir = "english_outputs/xlmroberta_base/"
     model_args.overwrite_output_dir = True
     model_args.save_steps = 300
     model_args.train_batch_size = 8
