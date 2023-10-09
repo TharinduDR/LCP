@@ -12,20 +12,22 @@ from algo.transformer_model.evaluation import pearson_corr, spearman_corr, print
     weighted_f1
 from algo.transformer_model.model_args import LCPArgs
 from algo.transformer_model.run_model import LCPModel
+import sys
 
 
+lang = "EN"
 
-train_bible = pd.read_csv("data/binary_comparative_MultiLex/PT/bible/binary_comparative_MultiLex_train_PT.tsv", sep="\t")
-train_biomed = pd.read_csv("data/binary_comparative_MultiLex/PT/biomed/binary_comparative_MultiLex_train_PT.tsv", sep="\t")
-train_news = pd.read_csv("data/binary_comparative_MultiLex/PT/news/binary_comparative_MultiLex_train_PT.tsv", sep="\t")
+train_bible = pd.read_csv(f"data/binary_comparative_MultiLex/{lang}/bible/binary_comparative_MultiLex_train_{lang}.tsv", sep="\t")
+train_biomed = pd.read_csv(f"data/binary_comparative_MultiLex/{lang}/biomed/binary_comparative_MultiLex_train_{lang}.tsv", sep="\t")
+train_news = pd.read_csv(f"data/binary_comparative_MultiLex/{lang}/news/binary_comparative_MultiLex_train_{lang}.tsv", sep="\t")
 
-dev_bible = pd.read_csv("data/binary_comparative_MultiLex/PT/bible/binary_comparative_MultiLex_dev_PT.tsv", sep="\t")
-dev_biomed = pd.read_csv("data/binary_comparative_MultiLex/PT/biomed/binary_comparative_MultiLex_dev_PT.tsv", sep="\t")
-dev_news = pd.read_csv("data/binary_comparative_MultiLex/PT/news/binary_comparative_MultiLex_dev_PT.tsv", sep="\t")
+dev_bible = pd.read_csv(f"data/binary_comparative_MultiLex/{lang}/bible/binary_comparative_MultiLex_dev_{lang}.tsv", sep="\t")
+dev_biomed = pd.read_csv(f"data/binary_comparative_MultiLex/{lang}/biomed/binary_comparative_MultiLex_dev_{lang}.tsv", sep="\t")
+dev_news = pd.read_csv(f"data/binary_comparative_MultiLex/{lang}/news/binary_comparative_MultiLex_dev_{lang}.tsv", sep="\t")
 
-test_bible = pd.read_csv("data/binary_comparative_MultiLex/PT/bible/binary_comparative_MultiLex_test_PT.tsv", sep="\t")
-test_biomed = pd.read_csv("data/binary_comparative_MultiLex/PT/biomed/binary_comparative_MultiLex_test_PT.tsv", sep="\t")
-test_news = pd.read_csv("data/binary_comparative_MultiLex/PT/news/binary_comparative_MultiLex_test_PT.tsv", sep="\t")
+test_bible = pd.read_csv(f"data_small/binary_comparative_MultiLex/{lang}/bible/small_binary_comparative_MultiLex_test_{lang}.tsv", sep="\t") # small test set selected.
+test_biomed = pd.read_csv(f"data_small/binary_comparative_MultiLex/{lang}/biomed/small_binary_comparative_MultiLex_test_{lang}.tsv", sep="\t")
+test_news = pd.read_csv(f"data_small/binary_comparative_MultiLex/{lang}/news/small_binary_comparative_MultiLex_test_{lang}.tsv", sep="\t")
 
 train_bible["genre"] = "bible"
 train_biomed["genre"] = "biomed"
@@ -77,7 +79,18 @@ test = test.rename(columns={'context1': 'text_a', 'context2': 'text_b', 'binary_
 test_sentence_pairs = list(map(list, zip(test['text_a'].to_list(), test['text_b'].to_list())))
 test_preds = np.zeros((len(test), 1))
 
-for i in range(5):
+
+model_cards = ['bert-base-multilingual-cased'] # 
+model_types = ["auto"] #"auto"
+
+# model_cards = ['neuralmind/bert-large-portuguese-cased' ] # 
+# model_types = ['auto'] #"auto"
+
+# model_cards = ['google/electra-base-generator' ] # 
+# model_types = ['auto'] #"auto"
+
+
+for i in range(len(model_cards)): # number of models.
     model_args = LCPArgs()
     model_args.best_model_dir = "portuguese_binary_outputs_1/best_model"
     model_args.eval_batch_size = 16
@@ -88,9 +101,9 @@ for i in range(5):
     model_args.learning_rate = 2e-5
     model_args.manual_seed = 777 * i
     model_args.max_seq_length = 256
-    model_args.model_type = "bert"
-    model_args.model_name = "neuralmind/bert-large-portuguese-cased"
-    model_args.num_train_epochs = 1
+    model_args.model_type = model_types[i]
+    model_args.model_name = model_cards[i]
+    model_args.num_train_epochs = 3 # 3 epochs default for binary comparative LCP.
     model_args.output_dir = "portuguese_binary_outputs_1/"
     model_args.save_steps = 1300
     model_args.train_batch_size = 8
@@ -108,21 +121,36 @@ for i in range(5):
     predictions, raw_outputs = model.predict(test_sentence_pairs)
     test_preds[:, i] = predictions
 
-final_predictions = []
-for pred_row in test_preds:
-    all_predictions = pred_row.tolist()
-    final_predictions.append(int(max(set(all_predictions), key=all_predictions.count)))
+    final_predictions = []
+    for pred_row in test_preds:
+        all_predictions = pred_row.tolist()
+        final_predictions.append(int(max(set(all_predictions), key=all_predictions.count)))
+    
+    test['predictions'] = final_predictions
+    
+    model_card = model_cards[i].replace("/", "")
+    sys.stdout = open(f'./binary_LCP_results/small/{lang}_{model_card}_all_results.txt', 'w')
+    print_stat(test, 'labels', 'predictions')
+    print("All")
+    print_binary_stat(test, 'labels', 'predictions')
+    
+    test.to_csv(f"./portuguese_outputs/{lang}_{model_card}_test_predictions.tsv", sep="\t", index=False)
+    
+    genres = test['genre'].unique()
+    for genre in genres:
+        print(genre)
+        filtered_predictions = test.loc[test['genre'] == genre]
+        print_binary_stat(filtered_predictions, 'labels', 'predictions')
+        print("=================")
+    
 
-test['predictions'] = final_predictions
 
-print_binary_stat(test, 'labels', 'predictions')
-test.to_csv("test_predictions.csv", sep="\t", index=False)
 
-genres = test['genre'].unique()
-for genre in genres:
-    print(genre)
-    filtered_predictions = test.loc[test['genre'] == genre]
-    print_binary_stat(filtered_predictions, 'labels', 'predictions')
-    print("=================")
+
+    
+
+
+
+
 
 

@@ -1,0 +1,168 @@
+RMSE=0.1469
+MAE=0.1128
+Pearson Correlation=0.7968
+Spearman Correlation=0.7539
+=================
+bible
+RMSE=0.1506
+MAE=0.1105
+Pearson Correlation=0.7440
+Spearman Correlation=0.7395
+=================
+news
+RMSE=0.1169
+MAE=0.0980
+Pearson Correlation=0.7214
+Spearman Correlation=0.6834
+=================
+biomed
+RMSE=0.1811
+MAE=0.1444
+Pearson Correlation=0.8768
+Spearman Correlation=0.8430
+=================
+[4;33mReloaded modules[24m: algo, algo.transformer_model, algo.transformer_model.evaluation, algo.transformer_model.model_args, algo.transformer_model.models, algo.transformer_model.models.bert_model, algo.transformer_model.models.distilbert_model, algo.transformer_model.models.roberta_model, algo.transformer_model.models.xlm_model, algo.transformer_model.models.xlm_roberta_model, algo.transformer_model.utils, algo.transformer_model.run_model[0m
+&&& 0.1844 & 0.1490 & 0.7522 & 0.6791 & 0.1842 & 0.1436 & 0.6865 & 0.6500 & 0.1488 & 0.1306 & 0.6518 & 0.5906 & 0.2340 & 0.1940 & 0.8569 & 0.8111 &  \\ &&& 
+&&& 0.1844 & 0.1490 & 0.7522 & 0.6791 & 0.1842 & 0.1436 & 0.6865 & 0.6500 & 0.1488 & 0.1306 & 0.6518 & 0.5906 & 0.2340 & 0.1940 & 0.8569 & 0.8111 &  \\ &&& 
+RMSE=0.1844
+
+MAE=0.1490
+
+Pearson Correlation=0.7522
+
+Spearman Correlation=0.6791
+
+=================
+
+bible
+
+RMSE=0.1842
+
+MAE=0.1436
+
+Pearson Correlation=0.6865
+
+Spearman Correlation=0.6500
+
+=================
+
+news
+
+RMSE=0.1488
+
+MAE=0.1306
+
+Pearson Correlation=0.6518
+
+Spearman Correlation=0.5906
+
+=================
+
+biomed
+
+RMSE=0.2340
+
+MAE=0.1940
+
+Pearson Correlation=0.8569
+
+Spearman Correlation=0.8111
+
+=================
+
+&&& 0.1844 & 0.1490 & 0.7522 & 0.6791 & 0.1842 & 0.1436 & 0.6865 & 0.6500 & 0.1488 & 0.1306 & 0.6518 & 0.5906 & 0.2340 & 0.1940 & 0.8569 & 0.8111 &  \\ &&& 
+RMSE=0.1844
+
+MAE=0.1490
+
+Pearson Correlation=0.7522
+
+Spearman Correlation=0.6791
+
+=================
+
+bible
+
+RMSE=0.1842
+
+MAE=0.1436
+
+Pearson Correlation=0.6865
+
+Spearman Correlation=0.6500
+
+=================
+
+news
+
+RMSE=0.1488
+
+MAE=0.1306
+
+Pearson Correlation=0.6518
+
+Spearman Correlation=0.5906
+
+=================
+
+biomed
+
+RMSE=0.2340
+
+MAE=0.1940
+
+Pearson Correlation=0.8569
+
+Spearman Correlation=0.8111
+
+=================
+
+&&& 0.1844 & 0.1490 & 0.7522 & 0.6791 & 0.1842 & 0.1436 & 0.6865 & 0.6500 & 0.1488 & 0.1306 & 0.6518 & 0.5906 & 0.2340 & 0.1940 & 0.8569 & 0.8111 &  \\ &&& 
+<_io.TextIOWrapper name='rdenadaiBR_BERTo_all_results.txt' mode='r' encoding='utf-8'>
+RMSE=0.1844
+
+MAE=0.1490
+
+Pearson Correlation=0.7522
+
+Spearman Correlation=0.6791
+
+=================
+
+bible
+
+RMSE=0.1842
+
+MAE=0.1436
+
+Pearson Correlation=0.6865
+
+Spearman Correlation=0.6500
+
+=================
+
+news
+
+RMSE=0.1488
+
+MAE=0.1306
+
+Pearson Correlation=0.6518
+
+Spearman Correlation=0.5906
+
+=================
+
+biomed
+
+RMSE=0.2340
+
+MAE=0.1940
+
+Pearson Correlation=0.8569
+
+Spearman Correlation=0.8111
+
+=================
+
+&&& 0.1844 & 0.1490 & 0.7522 & 0.6791 & 0.1842 & 0.1436 & 0.6865 & 0.6500 & 0.1488 & 0.1306 & 0.6518 & 0.5906 & 0.2340 & 0.1940 & 0.8569 & 0.8111 &  \\ &&& 

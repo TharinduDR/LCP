@@ -1,0 +1,28 @@
+
+All
+
+Weighted Recall= 0.6580689118162352
+Weighted Precision= 0.6610088136676843
+Weighter F Score= 0.6569550007531583
+
+bible
+
+Weighted Recall= 0.6294215563878485
+Weighted Precision= 0.6314032641283641
+Weighter F Score= 0.6291489754171125
+
+=================
+biomed
+
+Weighted Recall= 0.6752136752136753
+Weighted Precision= 0.6944267853358762
+Weighter F Score= 0.6623021365951955
+
+=================
+news
+
+Weighted Recall= 0.6878413337165852
+Weighted Precision= 0.6884744050417843
+Weighter F Score= 0.6877938763818577
+
+=================

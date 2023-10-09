@@ -52,8 +52,8 @@ for i in range(1):
     model_args.learning_rate = 2e-5
     model_args.manual_seed = 777 * i
     model_args.max_seq_length = 256
-    model_args.model_type = "xlmroberta"
-    model_args.model_name = "xlm-roberta-large"
+    model_args.model_type = "bert"
+    model_args.model_name = "bert-base-multilingual-cased"
     model_args.num_train_epochs = 5
     model_args.output_dir = "english_transfer_outputs/"
     model_args.save_steps = 300
@@ -134,7 +134,7 @@ for i in range(5):
     model_args.learning_rate = 2e-5
     model_args.manual_seed = 777 * i
     model_args.max_seq_length = 256
-    model_args.model_type = "xlmroberta"
+    model_args.model_type = "bert"
     model_args.model_name = "english_transfer_outputs/best_model"
     model_args.num_train_epochs = 5
     model_args.output_dir = "portuguese_outputs/"

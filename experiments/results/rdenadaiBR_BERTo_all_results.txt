@@ -1,0 +1,23 @@
+RMSE=0.1844
+MAE=0.1490
+Pearson Correlation=0.7522
+Spearman Correlation=0.6791
+=================
+bible
+RMSE=0.1842
+MAE=0.1436
+Pearson Correlation=0.6865
+Spearman Correlation=0.6500
+=================
+news
+RMSE=0.1488
+MAE=0.1306
+Pearson Correlation=0.6518
+Spearman Correlation=0.5906
+=================
+biomed
+RMSE=0.2340
+MAE=0.1940
+Pearson Correlation=0.8569
+Spearman Correlation=0.8111
+=================

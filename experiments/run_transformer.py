@@ -7,9 +7,15 @@ import torch
 from sklearn.metrics import mean_absolute_error
 from sklearn.model_selection import train_test_split
 
+import sys
+import algo
+
 from algo.transformer_model.evaluation import pearson_corr, spearman_corr, print_stat
 from algo.transformer_model.model_args import LCPArgs
 from algo.transformer_model.run_model import LCPModel
+
+
+# input("enter")
 
 # def log_function(value):
 #     return math.log(1 / (1 - value))
@@ -41,7 +47,14 @@ test_preds = np.zeros((len(test), 5))
 train = train.sample(frac=1).reset_index(drop=True)
 # train, dev = train_test_split(train, test_size=0.2)
 
-for i in range(5):
+
+
+# BR-BERTo, RoBERTa-PT-BR, Albertina PT-PT
+model_cards = ["rdenadai/BR_BERTo", "josu/roberta-pt-br"] # "PORTULAN/albertina-ptpt"
+model_types = ["roberta", "auto"] #"auto"
+
+
+for i in range(len(model_cards)): # number of models.
     model_args = LCPArgs()
     model_args.best_model_dir = "portuguese_outputs/best_model"
     model_args.eval_batch_size = 16
@@ -52,9 +65,9 @@ for i in range(5):
     model_args.learning_rate = 2e-5
     model_args.manual_seed = 777 * i
     model_args.max_seq_length = 256
-    model_args.model_type = "xlmroberta"
-    model_args.model_name = "xlm-roberta-large"
-    model_args.num_train_epochs = 5
+    model_args.model_type = model_types[i]
+    model_args.model_name = model_cards[i]
+    model_args.num_train_epochs = 5 # default is set to 5.
     model_args.output_dir = "portuguese_outputs/"
     model_args.save_steps = 120
     model_args.train_batch_size = 8
@@ -73,23 +86,31 @@ for i in range(5):
     predictions, raw_outputs = model.predict(test_sentence_pairs)
     test_preds[:, i] = predictions
 
-test['predictions'] = test_preds.mean(axis=1)
-print_stat(test, 'labels', 'predictions')
-test.to_csv("test_predictions.csv", sep="\t", index=False)
-
-print("=================")
-
-
-def genre_function(text):
-    text = str(text)
-    return text.split()[0]
-
-
-test["genre"] = test['text_a'].apply(genre_function)
-
-genres = test['genre'].unique()
-for genre in genres:
-    print(genre)
-    filtered_predictions = test.loc[test['genre'] == genre]
-    print_stat(filtered_predictions, 'labels', 'predictions')
+    test['predictions'] = test_preds.mean(axis=1)
+    model_card = model_cards[i].replace("/", "")
+    sys.stdout = open(f'./results/{model_card}_all_results.txt', 'w')
+    print_stat(test, 'labels', 'predictions')
+    test.to_csv(f"./portuguese_outputs/{model_card}_test_predictions.tsv", sep="\t", index=False)
+    
     print("=================")
+    
+    
+    def genre_function(text):
+        text = str(text)
+        return text.split()[0]
+    
+    test["genre"] = test['text_a'].apply(genre_function)
+    
+    genres = test['genre'].unique()
+    
+    
+    for genre in genres:
+        # sys.stdout = open(f'./results/{model_card}_{genre}_results.txt', 'w')
+        print(genre)
+        filtered_predictions = test.loc[test['genre'] == genre]
+        print_stat(filtered_predictions, 'labels', 'predictions')
+        print("=================")
+        
+        # input("enter")
+    
+    # sys.stdout.close()

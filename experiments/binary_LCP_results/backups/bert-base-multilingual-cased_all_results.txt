@@ -1,0 +1,31 @@
+RMSE=0.5442
+MAE=0.2962
+Pearson Correlation=0.4148
+Spearman Correlation=0.4148
+All
+
+Weighted Recall 0.7038154564921161
+Weighted Precision 0.7105985557667648
+Weighter F1 Score 0.7018603301962284
+Macro F1 Score 0.7020939755032904
+bible
+
+Weighted Recall 0.694548481065335
+Weighted Precision 0.6991491503415251
+Weighter F1 Score 0.6937820086548256
+Macro F1 Score 0.6941098081763013
+=================
+biomed
+
+Weighted Recall 0.7043740573152338
+Weighted Precision 0.714133520460913
+Weighter F1 Score 0.6982571445464687
+Macro F1 Score 0.6960580891295987
+=================
+news
+
+Weighted Recall 0.716297786720322
+Weighted Precision 0.7250736098602869
+Weighter F1 Score 0.7142157466515949
+Macro F1 Score 0.7145786710672446
+=================
